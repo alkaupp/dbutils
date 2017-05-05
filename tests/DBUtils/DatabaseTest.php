@@ -14,4 +14,13 @@ class DatabaseTest extends TestCase
         $db = new Database();
         $db->setDriver("foobar");
     }
+
+    public function testGetConnection()
+    {
+        $db = new Database();
+        $db->setDriver("sqlite")
+            ->setHostname(":memory:");
+        $con = $db->getConnection();
+        $this->assertInstanceOf(PDO::class, $con);
+    }
 }
