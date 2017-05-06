@@ -46,7 +46,7 @@ class Database implements DatabaseInterface
     public function replace(): Replace
     {
         $replace = new Replace($this->getConnection());
-        return $replacr;
+        return $replace;
     }
 
     public function setHostname(string $hostname)
