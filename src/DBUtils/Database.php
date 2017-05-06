@@ -6,10 +6,19 @@ namespace AKUtils\DBUtils;
 
 use AKUtils\DBUtils\DatabaseInterface;
 use AKUtils\DBUtils\UnknownDatabaseDriverException;
+use AKUtils\DBUtils\Insert;
+use AKUtils\DBUtils\Replace;
 
 class Database implements DatabaseInterface
 {
-    const DRIVERS = ["mysql", "sqlite", "pgsql"];
+    const DRIVER_MYSQL = "mysql";
+    const DRIVER_SQLITE = "sqlite";
+    const DRIVER_POSTGRESQL = "pgsql";
+    const DRIVERS = [
+        self::DRIVER_MYSQL,
+        self::DRIVER_SQLITE,
+        self::DRIVER_POSTGRESQL
+    ];
     protected $connection = "";
     protected $hostname = "";
     protected $username = "";
@@ -20,12 +29,24 @@ class Database implements DatabaseInterface
     public function getConnection(): \PDO
     {
         if (!$this->connection instanceof \PDO) {
-            $dsn = "{$this->getDriver()}:host={$this->getHostname()};dbname={$this->getDatabaseName()}";
+            $dsn = $this->getDSNForDriver($this->getDriver());
             $user = $this->getUsername();
             $pass = $this->getPassword();
             $this->connection = new \PDO($dsn, $user, $pass);
         }
         return $this->connection;
+    }
+
+    public function insert(): Insert
+    {
+        $insert = new Insert($this->getConnection());
+        return $insert;
+    }
+
+    public function replace(): Replace
+    {
+        $replace = new Replace($this->getConnection());
+        return $replacr;
     }
 
     public function setHostname(string $hostname)
@@ -85,5 +106,21 @@ class Database implements DatabaseInterface
     protected function getDriver(): string
     {
         return $this->driver;
+    }
+
+    protected function getDSNForDriver(string $driver): string
+    {
+        $dsn = null;
+        if ($driver === self::DRIVER_MYSQL||$driver === self::DRIVER_POSTGRESQL) {
+            $driver = $this->getDriver();
+            $host = $this->getHostname();
+            $dbname = $this->getDatabaseName();
+            $dsn = "{$driver}:{$host};{$dbname}";
+        } elseif ($driver === self::DRIVER_SQLITE) {
+            $driver = $this->getDriver();
+            $dbname = $this->getDatabaseName();
+            $dsn = "{$driver}:{$dbname}";
+        }
+        return $dsn;
     }
 }

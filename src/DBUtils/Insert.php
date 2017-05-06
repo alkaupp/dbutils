@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace AKUtils\DBUtils;
 
-class Insert
+use AKUtils\DBUtils\SQLStatementInterface;
+
+class Insert implements SQLStatementInterface
 {
     protected $connection;
     protected $table;
@@ -16,10 +18,24 @@ class Insert
         return $this;
     }
 
+    public function execute(): int
+    {
+        $stmt = $this->getQuery();
+        $query = $this->connection->prepare($stmt);
+        $params = $this->prepareParameters($this->getData());
+        $query->execute($params);
+        return $query->rowCount();
+    }
+
     public function setTable(string $table)
     {
         $this->table = $table;
         return $this;
+    }
+
+    protected function getTable(): string
+    {
+        return $this->table;
     }
 
     public function into(string $table)
@@ -34,6 +50,11 @@ class Insert
         return $this;
     }
 
+    protected function getData(): array
+    {
+        return $this->data;
+    }
+
     public function values(array $data)
     {
         $this->setData($data);
@@ -42,13 +63,13 @@ class Insert
 
     public function getSQLStatement(): string
     {
-        return $this->getInsertStatementSQL($this->data);
+        return $this->getTrueSQLStatement($this->getData());
     }
 
     protected function getQuery(): string
     {
-        $columns = array_keys($this->data);
-        $stmt = $this->getInsertStatement($columns);
+        $columns = array_keys($this->getData());
+        $stmt = $this->getPlaceholderSQLStatement($columns);
         return $stmt;
     }
 
@@ -61,28 +82,43 @@ class Insert
         return $params;
     }
 
-    protected function getInsertStatement(array $columns): string
+    /**
+     * Get SQL statement with parameter placeholders
+     * @param array $data column/value pair arra
+     * @return string SQL statement
+     */
+    protected function getPlaceholderSQLStatement(array $columns): string
     {
-        $colString = implode(", ", array_keys($this->data));
+        $colString = implode(", ", array_keys($this->getData()));
         $paramString = implode(", ", array_map(function($key) {
             return ":" . $key;
         }, $columns));
-
-        $query = "INSERT INTO {$this->table}({$colString}) VALUES({$paramString});";
+        $table = $this->getTable();
+        $query = $this->getQueryString($table, $colString, $paramString);
         return $query;
     }
 
-    protected function getInsertStatementSQL(array $data): string
+    /**
+     * Get SQL statement including actual parameters
+     * @param array $data column/value pair arra
+     * @return string SQL statement
+     */
+    protected function getTrueSQLStatement(array $data): string
     {
         $colString = implode(", ", array_keys($data));
         $paramString = implode(", ", array_map(function($value) {
-            if (!is_int($value) && !is_float($value)) {
+            if (is_string($value)) {
                 return "'{$value}'";
             }
             return $value;
         }, $data));
-
-        $query = "INSERT INTO {$this->table}($colString) VALUES({$paramString});";
+        $table = $this->getTable();
+        $query = $this->getQueryString($table, $colString, $paramString);
         return $query;
+    }
+
+    protected function getQueryString(string $table, string $columns, string $params): string
+    {
+        return "INSERT INTO {$table}($columns) VALUES({$params});";
     }
 }
