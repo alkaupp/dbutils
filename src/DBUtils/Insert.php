@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace AKUtils\DBUtils;
 
 use AKUtils\DBUtils\SQLStatementInterface;
+use AKUtils\DBUtils\Statement;
 
-class Insert implements SQLStatementInterface
+class Insert extends Statement implements SQLStatementInterface
 {
     protected $connection;
-    protected $table;
     protected $data;
 
     public function __construct(\PDO $connection)
@@ -20,25 +20,14 @@ class Insert implements SQLStatementInterface
 
     public function execute(): int
     {
-        $stmt = $this->getQuery();
+        $stmt = $this->createQuery();
         $query = $this->connection->prepare($stmt);
         $params = $this->prepareParameters($this->getData());
         $query->execute($params);
         return $query->rowCount();
     }
 
-    public function setTable(string $table)
-    {
-        $this->table = $table;
-        return $this;
-    }
-
-    protected function getTable(): string
-    {
-        return $this->table;
-    }
-
-    public function into(string $table)
+   public function into(string $table)
     {
         $this->setTable($table);
         return $this;
@@ -61,40 +50,13 @@ class Insert implements SQLStatementInterface
         return $this;
     }
 
-    public function getSQLStatement(): string
-    {
-        return $this->getTrueSQLStatement($this->getData());
-    }
-
-    protected function getQuery(): string
+    protected function createQuery(): string
     {
         $columns = array_keys($this->getData());
-        $stmt = $this->getPlaceholderSQLStatement($columns);
-        return $stmt;
-    }
-
-    protected function prepareParameters(array $data): array
-    {
-        $params = [];
-        foreach ($data as $key => $val) {
-            $params[":{$key}"] = $val;
-        }
-        return $params;
-    }
-
-    /**
-     * Get SQL statement with parameter placeholders
-     * @param array $data column/value pair arra
-     * @return string SQL statement
-     */
-    protected function getPlaceholderSQLStatement(array $columns): string
-    {
-        $colString = implode(", ", array_keys($this->getData()));
-        $paramString = implode(", ", array_map(function($key) {
-            return ":" . $key;
-        }, $columns));
+        $colString = implode(", ", $columns);
+        $placeholders = $this->getPlaceholsersForColumns($columns);
         $table = $this->getTable();
-        $query = $this->getQueryString($table, $colString, $paramString);
+        $query = $this->getQueryString($table, $colString, $placeholders);
         return $query;
     }
 
@@ -103,15 +65,11 @@ class Insert implements SQLStatementInterface
      * @param array $data column/value pair arra
      * @return string SQL statement
      */
-    protected function getTrueSQLStatement(array $data): string
+    public function getSQLStatement(): string
     {
-        $colString = implode(", ", array_keys($data));
-        $paramString = implode(", ", array_map(function($value) {
-            if (is_string($value)) {
-                return "'{$value}'";
-            }
-            return $value;
-        }, $data));
+        $data = $this->getData();
+        $colString = $this->columnsToString($this->getColumns($data));
+        $paramString = $this->valuesToString($this->getValues($data));
         $table = $this->getTable();
         $query = $this->getQueryString($table, $colString, $paramString);
         return $query;
