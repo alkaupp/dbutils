@@ -18,7 +18,7 @@ class Filter
     const IN = "IN";
 
     protected $filters;
-    protected $placeholderString;
+    protected $queryString;
     protected $value = 0;
     protected $column = 0;
     protected $betweenA = 0;
@@ -36,13 +36,13 @@ class Filter
 
     public function getSqlString(): string
     {
-        $sqlString = strtr($this->placeholderString, $this->filters);
+        $sqlString = strtr($this->queryString, $this->filters);
         return $sqlString;
     }
 
-    public function getPlaceholderString(): string
+    public function getQueryString(): string
     {
-        return $this->placeholderString;
+        return $this->queryString;
     }
 
     /**
@@ -53,7 +53,7 @@ class Filter
      */
     public function where(string $column, string $comparator, $value=null, $value2=null)
     {
-        $filter = $this->placeholderString;
+        $filter = $this->queryString;
         if ($filter === null) {
             $filter = "WHERE ";
         }
@@ -79,75 +79,69 @@ class Filter
             break;
         case self::IS_NULL:
             $filter .= "IS NULL";
-            $this->placeholderString = $filter;
+            $this->queryString = $filter;
             return $this;
         case self::NOT_NULL:
             $filter .= "IS NOT NULL";
-            $this->placeholderString = $filter;
+            $this->queryString = $filter;
             return $this;
         case self::BETWEEN:
             $between = $this->between($value, $value2);
-            $this->placeholderString = $filter . $between;
+            $this->queryString = $filter . $between;
             return $this;
         case self::IN:
             $in = $this->in($value);
-            $this->placeholderString = $filter . $in;
+            $this->queryString = $filter . $in;
             return $this;
         }
-        $column = ":column{$this->column}";
-        $this->column += 1;
-        $filters = array_merge($this->filters, [$column => $value]);
-        $this->filters = $filters;
-        $placeholder = is_string($value) ? "'{$column}'" : "{$column}";
-        $this->placeholderString = "{$filter}{$placeholder}";
+        $placeholder = $this->addFilter($value);
+        $this->queryString = "{$filter}{$placeholder}";
         return $this;
     }
 
     public function and()
     {
-        $this->placeholderString .= " AND ";
+        $this->queryString .= " AND ";
         return $this;
     }
 
     public function or()
     {
-        $this->placeholderString .= " OR ";
+        $this->queryString .= " OR ";
         return $this;
     }
 
     protected function between($value, $value2): string
     {
-        $betweenA = is_string($value) ? "':between{$this->betweenA}'" : ":between{$this->betweenA}";
-        $betweenB = is_string($value2) ? "':between{$this->betweenB}'" : ":between{$this->betweenB}";
-        $filter = "BETWEEN {$betweenA} AND {$betweenB}";
-        $betweenFilters = [
-            ":between{$this->betweenA}" => $value,
-            ":between{$this->betweenB}" => $value2
-        ];
-        $filters = array_merge($this->filters, $betweenFilters);
-        $this->filters = $filters;
-        $this->betweenA += 2;
-        $this->betweenB += 2;
+        $placeholder1 = $this->addFilter($value);
+        $placeholder2 = $this->addFilter($value2);
+        $filter = "BETWEEN {$placeholder1} AND {$placeholder2}";
         return $filter;
     }
 
     protected function in(array $values): string
     {
-        $valueFilters = [];
-        foreach ($values as $value) {
-            $valueFilters[":value{$this->value}"] = $value;
-            $this->value += 1;
-        }
-        $filters = array_merge($this->filters, $valueFilters);
-        $this->filters = $filters;
-        $valuePlaceholders = implode(", ", array_map(function($value) {
-            if (is_string($value)) {
-                return "'{$value}'";
-            }
-            return "{$value}";
-        }, array_keys($valueFilters)));
-        $filter = "IN({$valuePlaceholders})";
+        $placeholders = implode(", ", array_map(function($value) {
+            $placeholder = $this->addFilter($value);
+            return $placeholder;
+        }, $values));
+        $filter = "IN({$placeholders})";
         return $filter;
+    }
+
+    /**
+     * @param mixed Value for filter
+     * @return string Placeholder value
+     */
+    protected function addFilter($filter): string
+    {
+        $placeholder = ":value{$this->value}";
+        $this->filters[$placeholder] = $filter;
+        $this->value += 1;
+        if (is_string($filter)) {
+            return "'{$placeholder}'";
+        }
+        return $placeholder;
     }
 }
 

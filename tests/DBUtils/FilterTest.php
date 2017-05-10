@@ -15,12 +15,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterEquals()
+    public function testQueryStringFilterEquals()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
-            ->getPlaceholderString();
-        $expected = "WHERE column = ':column0'";
+            ->getQueryString();
+        $expected = "WHERE column = ':value0'";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -33,12 +33,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterNotEqual()
+    public function testQueryStringFilterNotEqual()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
-            ->getPlaceholderString();
-        $expected = "WHERE column != ':column0'";
+            ->getQueryString();
+        $expected = "WHERE column != ':value0'";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -51,12 +51,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterLessThan()
+    public function testQueryStringFilterLessThan()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::LESS_THAN, 3)
-            ->getPlaceholderString();
-        $expected = "WHERE column < :column0";
+            ->getQueryString();
+        $expected = "WHERE column < :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -69,12 +69,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterLessEqual()
+    public function testQueryStringFilterLessEqual()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::LESS_EQUAL, 3)
-            ->getPlaceholderString();
-        $expected = "WHERE column <= :column0";
+            ->getQueryString();
+        $expected = "WHERE column <= :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -87,12 +87,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterGreaterThan()
+    public function testQueryStringFilterGreaterThan()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::GREATER_THAN, 3)
-            ->getPlaceholderString();
-        $expected = "WHERE column > :column0";
+            ->getQueryString();
+        $expected = "WHERE column > :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -105,12 +105,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterGreaterEqual()
+    public function testQueryStringFilterGreaterEqual()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::GREATER_EQUAL, 3)
-            ->getPlaceholderString();
-        $expected = "WHERE column >= :column0";
+            ->getQueryString();
+        $expected = "WHERE column >= :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -124,11 +124,11 @@ class FilterTest extends TestCase
 
     }
 
-    public function testPlaceholderStringFilterIsNull()
+    public function testQueryStringFilterIsNull()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::IS_NULL)
-            ->getPlaceholderString();
+            ->getQueryString();
         $expected = "WHERE column IS NULL";
         $this->assertEquals($expected, $sqlString);
     }
@@ -142,11 +142,11 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterIsNotNull()
+    public function testQueryStringFilterIsNotNull()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::NOT_NULL)
-            ->getPlaceholderString();
+            ->getQueryString();
         $expected = "WHERE column IS NOT NULL";
         $this->assertEquals($expected, $sqlString);
     }
@@ -160,12 +160,12 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterBetween()
+    public function testQueryStringFilterBetween()
     {
         $filter = new Filter();
         $sqlString = $filter->where("date", Filter::BETWEEN, "2017-04-12", "2017-05-12")
-            ->getPlaceholderString();
-        $expected = "WHERE date BETWEEN ':between0' AND ':between1'";
+            ->getQueryString();
+        $expected = "WHERE date BETWEEN ':value0' AND ':value1'";
         $this->assertEquals(strlen($expected), strlen($sqlString));
         $this->assertEquals($expected, $sqlString);
     }
@@ -179,11 +179,11 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testPlaceholderStringFilterIn()
+    public function testQueryStringFilterIn()
     {
         $filter = new Filter();
         $sqlString = $filter->where("column", Filter::IN, ["horse", "cow", "dog"])
-            ->getPlaceholderString();
+            ->getQueryString();
         $expected = "WHERE column IN(':value0', ':value1', ':value2')";
         $this->assertEquals($expected, $sqlString);
     }
