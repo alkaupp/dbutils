@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AKUtils\DBUtils;
 
+use AKUtils\DBUtils\SQLStatementInterface;
+
 class Filter
 {
     const EQUALS = "=";
@@ -20,13 +22,22 @@ class Filter
     protected $filters;
     protected $queryString;
     protected $value = 0;
-    protected $column = 0;
-    protected $betweenA = 0;
-    protected $betweenB = 1;
+    protected $statement;
 
-    public function __construct()
+    public function __construct(SQLStatementInterface $statement)
     {
+        $this->statement = $statement;
         $this->filters = [];
+    }
+
+    public function execute()
+    {
+        return $this->statement->execute();
+    }
+
+    public function getSqlStatement()
+    {
+        return $this->statement->getSqlStatement();
     }
 
     public function getFilters(): array

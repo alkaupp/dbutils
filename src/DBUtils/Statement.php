@@ -39,13 +39,19 @@ abstract class Statement
     protected function getPlaceholdersForColumns(array $columns): string
     {
         $placeholders = implode(", ", array_map(function($key) {
-            return ":" . $key;
+        if (is_string($column)) {
+            return "':{$column}'";
+        }
+            return ":{$column}";
         }, $columns));
         return $placeholders;
     }
 
-    protected function getPlaceholderForColumn(string $column): string
+    protected function getPlaceholderForColumn($column): string
     {
+        if (is_string($column)) {
+            return "':{$column}'";
+        }
         return ":{$column}";
     }
 

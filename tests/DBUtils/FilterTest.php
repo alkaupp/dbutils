@@ -2,13 +2,19 @@
 
 use PHPUnit\Framework\TestCase;
 use AKUtils\DBUtils\Filter;
+use AKUtils\DBUtils\SQLStatementInterface;
 
 class FilterTest extends TestCase
 {
 
+    public function setUp()
+    {
+        $this->sqlStatement = $this->createMock(SQLStatementInterface::class);
+    }
+
     public function testSQLStringFilterEquals()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
             ->getSqlString();
         $expected = "WHERE column = 'foobar'";
@@ -17,7 +23,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterEquals()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
             ->getQueryString();
         $expected = "WHERE column = ':value0'";
@@ -26,7 +32,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterNotEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
             ->getSqlString();
         $expected = "WHERE column != 'foobar'";
@@ -35,7 +41,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterNotEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
             ->getQueryString();
         $expected = "WHERE column != ':value0'";
@@ -44,7 +50,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterLessThan()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_THAN, 3)
             ->getSqlString();
         $expected = "WHERE column < 3";
@@ -53,7 +59,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterLessThan()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_THAN, 3)
             ->getQueryString();
         $expected = "WHERE column < :value0";
@@ -62,7 +68,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterLessEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_EQUAL, 3)
             ->getSqlString();
         $expected = "WHERE column <= 3";
@@ -71,7 +77,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterLessEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_EQUAL, 3)
             ->getQueryString();
         $expected = "WHERE column <= :value0";
@@ -80,7 +86,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterGreaterThan()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_THAN, 3)
             ->getSqlString();
         $expected = "WHERE column > 3";
@@ -89,7 +95,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterGreaterThan()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_THAN, 3)
             ->getQueryString();
         $expected = "WHERE column > :value0";
@@ -98,7 +104,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterGreaterEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_EQUAL, 3)
             ->getSqlString();
         $expected = "WHERE column >= 3";
@@ -107,7 +113,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterGreaterEqual()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_EQUAL, 3)
             ->getQueryString();
         $expected = "WHERE column >= :value0";
@@ -116,7 +122,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterIsNull()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IS_NULL)
             ->getSqlString();
         $expected = "WHERE column IS NULL";
@@ -126,7 +132,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterIsNull()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IS_NULL)
             ->getQueryString();
         $expected = "WHERE column IS NULL";
@@ -135,7 +141,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterIsNotNull()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_NULL)
             ->getSqlString();
         $expected = "WHERE column IS NOT NULL";
@@ -144,7 +150,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterIsNotNull()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_NULL)
             ->getQueryString();
         $expected = "WHERE column IS NOT NULL";
@@ -153,7 +159,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterBetween()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("date", Filter::BETWEEN, "2017-04-12", "2017-05-12")
             ->getSqlString();
         $expected = "WHERE date BETWEEN '2017-04-12' AND '2017-05-12'";
@@ -162,7 +168,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterBetween()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("date", Filter::BETWEEN, "2017-04-12", "2017-05-12")
             ->getQueryString();
         $expected = "WHERE date BETWEEN ':value0' AND ':value1'";
@@ -172,7 +178,7 @@ class FilterTest extends TestCase
 
     public function testSQLStringFilterIn()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IN, ["horse", "cow", "dog"])
             ->getSqlString();
         $expected = "WHERE column IN('horse', 'cow', 'dog')";
@@ -181,7 +187,7 @@ class FilterTest extends TestCase
 
     public function testQueryStringFilterIn()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IN, ["horse", "cow", "dog"])
             ->getQueryString();
         $expected = "WHERE column IN(':value0', ':value1', ':value2')";
@@ -190,7 +196,7 @@ class FilterTest extends TestCase
 
     public function testSqlStringOr()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("animal", FILTER::EQUALS, "horse")
             ->or()
             ->where("animal", FILTER::EQUALS, "cow")
@@ -201,7 +207,7 @@ class FilterTest extends TestCase
 
     public function testSqlStringAnd()
     {
-        $filter = new Filter();
+        $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("animal", FILTER::EQUALS, "horse")
             ->and()
             ->where("animal", FILTER::EQUALS, "cow")

@@ -6,11 +6,13 @@ namespace AKUtils\DBUtils;
 
 use AKUtils\DBUtils\SQLStatementInterface;
 use AKUtils\DBUtils\Statement;
+use AKUtils\DBUtils\Filter;
 
 class Update extends Statement implements SQLStatementInterface
 {
     protected $connection;
     protected $data;
+    protected $filter;
 
     public function __construct(\PDO $connection)
     {
@@ -31,15 +33,22 @@ class Update extends Statement implements SQLStatementInterface
 
     protected function createQuery(): string
     {
-
+        $table = $this->getTable();
     }
 
-    public function getSQLStatement(): string
+    public function getSqlStatement(): string
     {
         $table = $this->getTable();
         $data = $this->getData();
-        $columnValuePairs = $this->getColumnValuePairs($data);
-        $filters = $this->getFilters();
+        $params = $this->prepareParameters($data);
+        $columns = strtr($this->preparePlaceholders($data), $params);
+        $filter = $this->filter;
+        if ($this->filter === null) {
+            throw new \Exception("Update needs a filter!");
+        }
+        $filters = strtr($filter->getQueryString(), $filter->getFilters());
+        $query = $this->getQueryString($table, $columns, $filters);
+        return $query;
     }
 
     public function execute(): int
@@ -49,15 +58,27 @@ class Update extends Statement implements SQLStatementInterface
 
     protected function getQueryString(string $table, string $columns, string $filters): string
     {
-        return "UPDATE {$table} SET {$columns} WHERE {$filters}";
+        return "UPDATE {$table} SET {$columns} {$filters}";
     }
 
-    protected function parseColumnValuePairs(array $data): array
+    protected function preparePlaceholders(array $data): string
     {
-        $columnValuePairs = [];
+        $placeholders = [];
         foreach ($data as $column => $value) {
-            $columnValuePairs[] = "{$column}={$value}";
+            if (is_string($value)) {
+                $placeholders[] = "{$column}=':{$column}'";
+            } else {
+                $placeholders[] = "{$column}=:{$column}";
+            }
         }
-        return $columnValuePairs;
+        $placeholderString = implode(", ", $placeholders);
+        return $placeholderString;
+    }
+
+    public function filter(): Filter
+    {
+        $filter = new Filter($this);
+        $this->filter = $filter;
+        return $filter;
     }
 }
