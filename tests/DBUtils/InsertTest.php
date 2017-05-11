@@ -18,6 +18,6 @@ class InsertTest extends TestCase
         $insert = new Insert($pdo);
         $insert->into("test")->values(["id" => 3, "name" => "Testman"]);
         $expected = "INSERT INTO test(id, name) VALUES(3, 'Testman');";
-        $this->assertEquals($expected, $insert->getSQLStatement());
+        $this->assertEquals($expected, $insert->getSqlStatement());
     }
 }

@@ -49,3 +49,4 @@ class UpdateTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 }
+

@@ -31,9 +31,24 @@ class Update extends Statement implements SQLStatementInterface
         return $this->data;
     }
 
+    public function set(array $data)
+    {
+        $this->setData($data);
+        return $this;
+    }
+
     protected function createQuery(): string
     {
         $table = $this->getTable();
+        $data = $this->getData();
+        $columns = $this->preparePlaceholders($data);
+        $filter = $this->filter;
+        if ($this->filter === null) {
+            throw new \Exception("Update needs a filter!");
+        }
+        $filters = $filter->getQueryString();
+        $query = $this->getQueryString($table, $columns, $filters);
+        return $query;
     }
 
     public function getSqlStatement(): string
@@ -53,7 +68,15 @@ class Update extends Statement implements SQLStatementInterface
 
     public function execute(): int
     {
-
+        $stmt = $this->createQuery();
+        $query = $this->connection->prepare($stmt);
+        $filters = $this->filter->getFilters();
+        $params = array_merge(
+            $this->prepareParameters($data),
+            $this->prepareParameters($filters)
+        );
+        $query->execute($params);
+        return $query->rowCount();
     }
 
     protected function getQueryString(string $table, string $columns, string $filters): string

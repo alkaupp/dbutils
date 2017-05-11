@@ -2,7 +2,7 @@
 
 interface SQLStatementInterface
 {
-    public function getSQLStatement(): string;
+    public function getSqlStatement(): string;
     public function setTable(string $table);
     public function execute(): int;
 }
