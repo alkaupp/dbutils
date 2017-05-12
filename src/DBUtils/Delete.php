@@ -6,8 +6,10 @@ namespace AKUtils\DBUtils;
 
 use AKUtils\DBUtils\Statement;
 use AKUtils\DBUtils\SQLStatementInterface;
+use AKUtils\DBUtils\Filterable;
+use AKUtils\DBUtils\Filter;
 
-class Delete extends Statement implements SQLStatementInterface
+class Delete extends Statement implements SQLStatementInterface, Filterable
 {
     protected $connection;
     protected $table;
@@ -65,9 +67,10 @@ class Delete extends Statement implements SQLStatementInterface
         return $this->getQueryString($table, $filters);
     }
 
-    public function filter(): Filter
+    public function where(string $column, string $comparator, $value=null, $value2=null): Filter
     {
         $filter = new Filter($this);
+        $filter->where($column, $comparator, $value, $value2);
         $this->filter = $filter;
         return $filter;
     }

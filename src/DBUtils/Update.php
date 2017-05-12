@@ -7,8 +7,9 @@ namespace AKUtils\DBUtils;
 use AKUtils\DBUtils\SQLStatementInterface;
 use AKUtils\DBUtils\Statement;
 use AKUtils\DBUtils\Filter;
+use AKUtils\DBUtils\Filterable;
 
-class Update extends Statement implements SQLStatementInterface
+class Update extends Statement implements SQLStatementInterface, Filterable
 {
     protected $connection;
     protected $data;
@@ -98,9 +99,10 @@ class Update extends Statement implements SQLStatementInterface
         return $placeholderString;
     }
 
-    public function filter(): Filter
+    public function where(string $column, string $comparator, $value=null, $value2=null): Filter
     {
         $filter = new Filter($this);
+        $filter->where($column, $comparator, $value, $value2);
         $this->filter = $filter;
         return $filter;
     }

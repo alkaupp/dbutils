@@ -11,7 +11,7 @@ class DeleteTest extends TestCase
         $pdo = $this->createMock(PDO::class);
         $delete = new Delete($pdo);
         $delete->from("test")
-            ->filter()->where("id", Filter::EQUALS, 666);
+            ->where("id", Filter::EQUALS, 666);
         $actual = $delete->getSqlStatement();
         $expected = "DELETE FROM test WHERE id = 666";
         $this->assertEquals($expected, $actual);

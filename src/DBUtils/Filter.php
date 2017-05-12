@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace AKUtils\DBUtils;
 
 use AKUtils\DBUtils\SQLStatementInterface;
+use AKUtils\DBUtils\Filterable;
 
-class Filter
+class Filter implements Filterable
 {
     const EQUALS = "=";
     const NOT_EQUAL = "!=";
@@ -62,7 +63,7 @@ class Filter
      * @param mixed $value Value or values to compare to
      * @param mixed $value2 Optional value for eg. date BETWEEN
      */
-    public function where(string $column, string $comparator, $value=null, $value2=null)
+    public function where(string $column, string $comparator, $value=null, $value2=null): Filter
     {
         $filter = $this->queryString;
         if ($filter === null) {
