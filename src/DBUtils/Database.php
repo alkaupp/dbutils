@@ -8,6 +8,8 @@ use AKUtils\DBUtils\DatabaseInterface;
 use AKUtils\DBUtils\UnknownDatabaseDriverException;
 use AKUtils\DBUtils\Insert;
 use AKUtils\DBUtils\Replace;
+use AKUtils\DBUtils\Delete;
+use AKUtils\DBUtils\Update;
 
 class Database implements DatabaseInterface
 {
@@ -47,6 +49,18 @@ class Database implements DatabaseInterface
     {
         $replace = new Replace($this->getConnection());
         return $replace;
+    }
+
+    public function update(): Update
+    {
+        $update = new Update($this->getConnection());
+        return $update;
+    }
+
+    public function delete(): Delete
+    {
+        $delete = new Delete($this->getConnection());
+        return $delete;
     }
 
     public function setHostname(string $hostname)

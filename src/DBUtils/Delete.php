@@ -20,18 +20,30 @@ class Delete extends Statement implements SQLStatementInterface, Filterable
         $this->connection = $connection;
     }
 
+    /**
+     * Set table for query
+     * @param string $table
+     */
     public function setTable(string $table)
     {
         $this->table = $table;
         return $this;
     }
 
+    /**
+     * Set table for query, alternative for setTable()
+     * @param string $table
+     */
     public function from(string $table)
     {
         $this->setTable($table);
         return $this;
     }
 
+    /**
+     * Execute current query
+     * @return int Affected rows
+     */
     public function execute(): int
     {
         $stmt = $this->createQuery();

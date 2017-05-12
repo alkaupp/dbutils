@@ -8,6 +8,10 @@ abstract class Statement
 {
     protected $table;
 
+    /**
+     * Set table for query
+     * @param string $table
+     */
     public function setTable(string $table)
     {
         $this->table = $table;
@@ -19,6 +23,11 @@ abstract class Statement
         return $this->table;
     }
  
+    /**
+     * Create query string for PDO-object. This query uses placeholder values
+     * for parameters.
+     * @return string Query string that will be prepared
+     */
     abstract protected function createQuery(): string;
 
     /**
