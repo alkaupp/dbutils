@@ -29,7 +29,7 @@ $db->setHostname("localhost")
 $connection = $db->getConnection();
 ```
 
-#### Query-classes (SQLStatementInterface)
+#### Query-classes
 
 Database object can be used to instantiate query-classes. We can chain method
 calls to do an Insert-statement.
@@ -42,19 +42,19 @@ $db->insert()->into("test")
     ->execute();
 ```
 
-We could also do an Update or a Delete statement which always expect a filter
+We could also do an Update statement which always expect a filter
 to match the affected rows.
 
 Example:
 
 ```
-$db->update()->setTable("test")
-    ->setData(["animal" => "horse"])
+$db->update("test")
+    ->set(["animal" => "horse"])
     ->where("animal", Filter::EQUALS, "mule")
     ->execute();
 ```
 
-Or do a delete.
+Or do Delete.
 
 
 ```

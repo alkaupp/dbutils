@@ -51,9 +51,12 @@ class Database implements DatabaseInterface
         return $replace;
     }
 
-    public function update(): Update
+    public function update(string $table=null): Update
     {
         $update = new Update($this->getConnection());
+        if ($table !== null) {
+            $update->setTable($table);
+        }
         return $update;
     }
 
