@@ -12,6 +12,7 @@ class Table
     protected $modifyColumns;
     protected $dropColumns;
     protected $foreignKeys;
+    protected $dropForeignKeys;
     const CREATE = "CREATE";
     const UPDATE = "UPDATE";
     const DROP = "DROP";
@@ -23,6 +24,7 @@ class Table
         $this->modifyColumns = [];
         $this->dropColumns = [];
         $this->foreignKeys = [];
+        $this->dropForeignKeys = [];
     }
 
     public function setTable(string $table)
@@ -77,12 +79,26 @@ class Table
     public function dropForeignKey(string $constraint)
     {
         $foreignKey = "DROP FOREIGN KEY `{$constraint}`";
-        $this->foreignKeys[] = $foreignKey;
+        $this->dropForeignKeys[] = $foreignKey;
         return $this;
     }
+
     public function create()
     {
+        $stmt = $this->getSqlCreateStatement();
+        return $this->execute($stmt);
+    }
 
+    public function update()
+    {
+        $stmt = $this->getSqlUpdateStatement();
+        return $this->execute($stmt);
+    }
+
+    protected function execute(string $statement)
+    {
+        $query = $this->connection->prepare($statement);
+        $query->execute();
     }
 
     public function getSqlStatement(string $method): string
@@ -128,7 +144,13 @@ class Table
             $alter .= " {$columns}";
         }
         if (!empty($this->foreignKeys)) {
-            $fks = implode(" ", $this->foreignKeys);
+            $fks = implode(" ", array_map(function($fk) {
+                return " ADD {$fk}";
+            }, $this->foreignKeys));
+            $alter .= $fks;
+        }
+        if (!empty($this->dropForeignKeys)) {
+            $fks = implode(" ", $this->dropForeignKeys);
             $alter .= " {$fks}";
         }
         return $alter;

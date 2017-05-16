@@ -66,6 +66,17 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
+    public function testGetUpdateSqlStatementAddFK()
+    {
+        $pdo = $this->createMock(\PDO::class);
+        $table = new Table($pdo);
+        $stmt = $table->setTable("test")
+            ->addForeignKey("city_id", "city", "id", ["ON DELETE CASCADE", "ON UPDATE CASCADE"])
+            ->getSqlStatement(Table::UPDATE);
+        $expected = "ALTER TABLE `test` ADD FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE CASCADE ON UPDATE CASCADE";
+        $this->assertEquals($expected, $stmt);
+    }
+
     public function testGetUpdateSqlStatementDropFK()
     {
         $pdo = $this->createMock(\PDO::class);

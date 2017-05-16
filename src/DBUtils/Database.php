@@ -10,6 +10,7 @@ use AKUtils\DBUtils\Insert;
 use AKUtils\DBUtils\Replace;
 use AKUtils\DBUtils\Delete;
 use AKUtils\DBUtils\Update;
+use AKUtils\DBUtils\Table;
 
 class Database implements DatabaseInterface
 {
@@ -22,11 +23,14 @@ class Database implements DatabaseInterface
         self::DRIVER_POSTGRESQL
     ];
     protected $connection = "";
-    protected $hostname = "";
+    protected $hostname = "localhost";
+    protected $port = 3306;
     protected $username = "";
     protected $password = "";
     protected $dbname = "";
     protected $driver = "";
+    protected $characterSet = "utf8";
+    protected $collation = "";
 
     public function getConnection(): \PDO
     {
@@ -66,6 +70,12 @@ class Database implements DatabaseInterface
         return $delete;
     }
 
+    public function table(): Table
+    {
+        $table = new Table($this->getConnection());
+        return $table;
+    }
+
     public function setHostname(string $hostname)
     {
         $this->hostname = $hostname;
@@ -75,6 +85,17 @@ class Database implements DatabaseInterface
     protected function getHostname(): string
     {
         return $this->hostname;
+    }
+
+    public function setPort(int $port)
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    protected function getPort(): int
+    {
+        return $this->port;
     }
 
     public function setUsername(string $username)
@@ -131,13 +152,58 @@ class Database implements DatabaseInterface
         if ($driver === self::DRIVER_MYSQL||$driver === self::DRIVER_POSTGRESQL) {
             $driver = $this->getDriver();
             $host = $this->getHostname();
-            $dbname = $this->getDatabaseName();
-            $dsn = "{$driver}:{$host};{$dbname}";
+            $port = $this->getPort();
+            $dsn = "{$driver}:host={$host};port={$port}";
+            if (strlen($this->getDatabaseName()) > 0) {
+                $dbname = $this->getDatabaseName();
+                $dsn .= ";dbname={$dbname}";
+            }
         } elseif ($driver === self::DRIVER_SQLITE) {
             $driver = $this->getDriver();
             $dbname = $this->getDatabaseName();
             $dsn = "{$driver}:{$dbname}";
         }
         return $dsn;
+    }
+
+    public function setCharacterSet(string $charset)
+    {
+        $this->characterSet = $charset;
+        return $this;
+    }
+
+    protected function getCharacterSet(): string
+    {
+        return $this->characterSet;
+    }
+
+    public function setCollation(string $collation)
+    {
+        $this->collation = $collation;
+        return $this;
+    }
+
+    protected function getCollation(): string
+    {
+        return $this->collation;
+    }
+
+    public function create(string $dbname)
+    {
+        $charset = $this->getCharacterSet();
+        $collation = $this->getCollation();
+        $stmt = "CREATE DATABASE `{$dbname}` CHARACTER SET {$charset} COLLATE {$collation}";
+        $conn = $this->getConnection();
+        $query = $conn->prepare($stmt);
+        $query->execute();
+    }
+
+    public function drop()
+    {
+        $dbname = $this->getDatabaseName();
+        $stmt = "DROP DATABASE {$dbname}";
+        $conn = $this->getConnection();
+        $query = $conn->prepare($stmt);
+        $query->execute();
     }
 }
