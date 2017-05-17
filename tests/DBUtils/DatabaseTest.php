@@ -3,33 +3,27 @@
 use PHPUnit\Framework\TestCase;
 use AKUtils\DBUtils\Database;
 use AKUtils\DBUtils\Filter;
+use AKUtils\DBUtils\Connection\ConnectionInterface;
 
 class DatabaseTest extends TestCase
 {
-    /**
-     * @expectedException AKUtils\DBUtils\UnknownDatabaseDriverException
-     * @expectedExceptionMessage Unknown driver: foobar
-     */
-    public function testSetDriverThrowsExceptionWithUnknown()
+    public function setUp()
     {
-        $db = new Database();
-        $db->setDriver("foobar");
+        $pdo = $this->createMock(PDO::class);
+        $this->connection = $this->createMock(ConnectionInterface::class);
+        $this->connection->method("getConnection")->willReturn($pdo);
     }
 
     public function testGetConnection()
     {
-        $db = new Database();
-        $db->setDriver("sqlite")
-            ->setHostname(":memory:");
+        $db = new Database($this->connection);
         $con = $db->getConnection();
         $this->assertInstanceOf(PDO::class, $con);
     }
 
     public function testInsert()
     {
-        $db = new Database();
-        $db->setDriver("sqlite")
-            ->setHostname(":memory:");
+        $db = new Database($this->connection);
         $actual = $db->insert()
             ->into("test")
             ->values(["id" => 3, "name" => "testman"])
@@ -40,22 +34,18 @@ class DatabaseTest extends TestCase
 
     public function testReplace()
     {
-        $db = new Database();
-        $db->setDriver("sqlite")
-            ->setHostname(":memory:");
+        $db = new Database($this->connection);
         $actual = $db->replace()
             ->into("test")
             ->values(["id" => 3, "name" => "testman"])
-            ->getSQLStatement();
+            ->getSqlStatement();
         $expected = "REPLACE INTO test(id, name) VALUES(3, 'testman');";
         $this->assertEquals($expected, $actual);
     }
 
     public function testUpdate()
     {
-        $db = new Database();
-        $db->setDriver("sqlite")
-            ->setHostname(":memory:");
+        $db = new Database($this->connection);
         $actual = $db->update("test")
             ->set(["foo" => "bar"])
             ->where("id", Filter::EQUALS, 45)

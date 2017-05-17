@@ -2,9 +2,10 @@
 
 interface DatabaseInterface
 {
-    public function getConnection(): \PDO;
-    public function setHostname(string $hostname);
-    public function setUsername(string $username);
-    public function setPassword(string $password);
-    public function setDatabaseName(string $dbname);
+    public function insert();
+    public function delete();
+    public function replace();
+    public function update();
+    public function create(string $dbname);
+    public function drop();
 }
