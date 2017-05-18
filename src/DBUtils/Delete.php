@@ -49,19 +49,13 @@ class Delete extends Statement implements SQLStatementInterface, Filterable
         $stmt = $this->createQuery();
         $query = $this->connection->prepare($stmt);
         $filters = $this->filter->getFilters();
-        $params = array_merge(
-            $this->prepareParameters($data),
-            $this->prepareParameters($filters)
-        );
-        $query->execute($params);
+        $query->execute($filters);
         return $query->rowCount();
     }
 
     protected function createQuery(): string
     {
         $table = $this->getTable();
-        $data = $this->getData();
-        $columns = $this->preparePlaceholders($data);
         $filter = $this->filter;
         if ($this->filter === null) {
             throw new \Exception("Update needs a filter!");

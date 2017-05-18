@@ -40,7 +40,11 @@ abstract class Statement
     {
         $params = [];
         foreach ($data as $key => $val) {
-            $params[":{$key}"] = $val;
+            $value = $val;
+            if (is_string($val)) {
+                $value = "'{$val}'";
+            }
+            $params[":{$key}"] = $value;
         }
         return $params;
     }
@@ -48,10 +52,6 @@ abstract class Statement
     protected function getPlaceholdersForColumns(array $columns): string
     {
         $placeholders = implode(", ", array_map(function($column) {
-        // Apparently you don't need to do this to bound parameters
-        //if (is_string($column)) {
-        //    return "':{$column}'";
-        //}
             return ":{$column}";
         }, $columns));
         return $placeholders;

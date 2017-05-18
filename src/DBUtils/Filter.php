@@ -48,7 +48,13 @@ class Filter implements Filterable
 
     public function getSqlString(): string
     {
-        $sqlString = strtr($this->queryString, $this->filters);
+        $filters = array_map(function($filter) {
+            if (is_string($filter)) {
+                return "'{$filter}'";
+            }
+            return $filter;
+        }, $this->filters);
+        $sqlString = strtr($this->queryString, $filters);
         return $sqlString;
     }
 
@@ -150,9 +156,6 @@ class Filter implements Filterable
         $placeholder = ":value{$this->value}";
         $this->filters[$placeholder] = $filter;
         $this->value += 1;
-        if (is_string($filter)) {
-            return "'{$placeholder}'";
-        }
         return $placeholder;
     }
 }

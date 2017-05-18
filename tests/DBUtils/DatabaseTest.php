@@ -35,8 +35,13 @@ class DatabaseTest extends TestCase
         $this->connection->method("getConnection")->willReturn($pdo);
     }
 
-    public function testTableTestExists()
+    public function tearDown()
     {
+        $db = new Database(self::$sqliteCon);
+        $db->delete()
+            ->from("test")
+            ->where("id", Filter::GREATER_THAN, 0)
+            ->execute();
     }
 
     public function testGetConnection()

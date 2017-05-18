@@ -62,7 +62,7 @@ class Update extends Statement implements SQLStatementInterface, Filterable
         if ($this->filter === null) {
             throw new \Exception("Update needs a filter!");
         }
-        $filters = strtr($filter->getQueryString(), $filter->getFilters());
+        $filters = $filter->getSqlString();
         $query = $this->getQueryString($table, $columns, $filters);
         return $query;
     }
@@ -89,11 +89,7 @@ class Update extends Statement implements SQLStatementInterface, Filterable
     {
         $placeholders = [];
         foreach ($data as $column => $value) {
-            if (is_string($value)) {
-                $placeholders[] = "{$column}=':{$column}'";
-            } else {
-                $placeholders[] = "{$column}=:{$column}";
-            }
+            $placeholders[] = "{$column}=:{$column}";
         }
         $placeholderString = implode(", ", $placeholders);
         return $placeholderString;

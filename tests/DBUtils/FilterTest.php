@@ -26,7 +26,7 @@ class FilterTest extends TestCase
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
             ->getQueryString();
-        $expected = "WHERE column = ':value0'";
+        $expected = "WHERE column = :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -44,7 +44,7 @@ class FilterTest extends TestCase
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
             ->getQueryString();
-        $expected = "WHERE column != ':value0'";
+        $expected = "WHERE column != :value0";
         $this->assertEquals($expected, $sqlString);
     }
 
@@ -171,7 +171,7 @@ class FilterTest extends TestCase
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("date", Filter::BETWEEN, "2017-04-12", "2017-05-12")
             ->getQueryString();
-        $expected = "WHERE date BETWEEN ':value0' AND ':value1'";
+        $expected = "WHERE date BETWEEN :value0 AND :value1";
         $this->assertEquals(strlen($expected), strlen($sqlString));
         $this->assertEquals($expected, $sqlString);
     }
@@ -190,7 +190,7 @@ class FilterTest extends TestCase
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IN, ["horse", "cow", "dog"])
             ->getQueryString();
-        $expected = "WHERE column IN(':value0', ':value1', ':value2')";
+        $expected = "WHERE column IN(:value0, :value1, :value2)";
         $this->assertEquals($expected, $sqlString);
     }
 
