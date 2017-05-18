@@ -4,14 +4,39 @@ use PHPUnit\Framework\TestCase;
 use AKUtils\DBUtils\Database;
 use AKUtils\DBUtils\Filter;
 use AKUtils\DBUtils\Connection\ConnectionInterface;
+use AKUtils\DBUtils\Connection\SQLiteConnection;
 
 class DatabaseTest extends TestCase
 {
+    protected static $sqliteCon;
+
+    public static function setUpBeforeClass()
+    {
+        $con = new SQLiteConnection();
+        $con->useInMemoryDatabase();
+        $db = new Database($con);
+        $db->table()
+            ->setTable("test")
+            ->addColumn("id", "integer", ["primary key"])
+            ->addColumn("name", "text")
+            ->create();
+        self::$sqliteCon = $con;
+    }
+
+    public static function tearDownAfterClass()
+    {
+        self::$sqliteCon = null;
+    }
+
     public function setUp()
     {
         $pdo = $this->createMock(PDO::class);
         $this->connection = $this->createMock(ConnectionInterface::class);
         $this->connection->method("getConnection")->willReturn($pdo);
+    }
+
+    public function testTableTestExists()
+    {
     }
 
     public function testGetConnection()
@@ -52,5 +77,15 @@ class DatabaseTest extends TestCase
             ->getSqlStatement();
         $expected = "UPDATE test SET foo='bar' WHERE id = 45";
         $this->assertEquals($expected, $actual);
+    }
+
+    public function testInsertExecute()
+    {
+        $db = new Database(self::$sqliteCon);
+        $query = $db->insert()
+            ->into("test")
+            ->values(["name" => "Test User"])
+            ->execute();
+        $this->assertEquals(1, $query, "Rowcount mismatch");
     }
 }

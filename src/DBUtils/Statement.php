@@ -47,10 +47,11 @@ abstract class Statement
 
     protected function getPlaceholdersForColumns(array $columns): string
     {
-        $placeholders = implode(", ", array_map(function($key) {
-        if (is_string($column)) {
-            return "':{$column}'";
-        }
+        $placeholders = implode(", ", array_map(function($column) {
+        // Apparently you don't need to do this to bound parameters
+        //if (is_string($column)) {
+        //    return "':{$column}'";
+        //}
             return ":{$column}";
         }, $columns));
         return $placeholders;

@@ -13,12 +13,15 @@ use AKUtils\DBUtils\Update;
 use AKUtils\DBUtils\Table;
 use AKUtils\DBUtils\Connection\ConnectionInterface;
 use AKUtils\DBUtils\Charset;
+use AKUtils\DBUtils\CharsetException;
+use AKUtils\DBUtils\Collation;
+use AKUtils\DBUtils\CollationException;
 
 class Database implements DatabaseInterface
 {
     protected $connection;
     protected $characterSet;
-    protected $collation = "";
+    protected $collation;
 
     public function __construct(ConnectionInterface $con)
     {
@@ -68,6 +71,9 @@ class Database implements DatabaseInterface
 
     public function setCharacterSet(string $charset)
     {
+        if (!in_array($charset, Charset::LIST)) {
+            throw new CharsetException("Unknown charset: {$charset}");
+        }
         $this->characterSet = $charset;
         return $this;
     }
@@ -75,19 +81,25 @@ class Database implements DatabaseInterface
     protected function getCharacterSet(): string
     {
         if ($this->characterSet === null) {
-            return Charset::UTF8;
+            $this->characterSet = Charset::UTF8;
         }
         return $this->characterSet;
     }
 
     public function setCollation(string $collation)
     {
+        if (!in_array($collation, Collation::LIST)) {
+            throw new CollationException("Unknown collation: {$collation}");
+        }
         $this->collation = $collation;
         return $this;
     }
 
     protected function getCollation(): string
     {
+        if ($this->collation === null) {
+            $this->collation = Collation::UTF8_GENERAL_CI;
+        }
         return $this->collation;
     }
 
