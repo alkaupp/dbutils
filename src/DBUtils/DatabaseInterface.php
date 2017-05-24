@@ -1,4 +1,4 @@
-<?php namespace AKUtils\DBUtils;
+<?php namespace DBUtils;
 
 interface DatabaseInterface
 {

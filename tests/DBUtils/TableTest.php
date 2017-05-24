@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Table;
+use DBUtils\Table;
 
 class TableTest extends TestCase
 {

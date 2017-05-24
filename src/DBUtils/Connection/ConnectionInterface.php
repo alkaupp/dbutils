@@ -1,6 +1,6 @@
 <?php
 
-namespace AKUtils\DBUtils\Connection;
+namespace DBUtils\Connection;
 
 interface ConnectionInterface
 {

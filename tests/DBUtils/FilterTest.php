@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Filter;
-use AKUtils\DBUtils\SQLStatementInterface;
+use DBUtils\Filter;
+use DBUtils\SQLStatementInterface;
 
 class FilterTest extends TestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils\Connection;
+namespace DBUtils\Connection;
 
 abstract class AbstractConnection
 {

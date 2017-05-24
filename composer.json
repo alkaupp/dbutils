@@ -5,7 +5,7 @@
         }
     },
     "autoload": {
-        "psr-4": {"AKUtils\\": "src/"}
+        "psr-4": {"DBUtils\\": "src/DBUtils/"}
     },
     "require": {
         "phpunit/phpunit": "^6.0",

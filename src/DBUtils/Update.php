@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
-use AKUtils\DBUtils\SQLStatementInterface;
-use AKUtils\DBUtils\Statement;
-use AKUtils\DBUtils\Filter;
-use AKUtils\DBUtils\Filterable;
+use DBUtils\SQLStatementInterface;
+use DBUtils\Statement;
+use DBUtils\Filter;
+use DBUtils\Filterable;
 
 class Update extends Statement implements SQLStatementInterface, Filterable
 {

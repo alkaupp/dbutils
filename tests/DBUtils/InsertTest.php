@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Insert;
+use DBUtils\Insert;
 
 class InsertTest extends TestCase
 {

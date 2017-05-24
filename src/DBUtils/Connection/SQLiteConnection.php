@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils\Connection;
+namespace DBUtils\Connection;
 
-use AKUtils\DBUtils\Connection\ConnectionInterface;
+use DBUtils\Connection\ConnectionInterface;
 
 class SQLiteConnection implements ConnectionInterface
 {

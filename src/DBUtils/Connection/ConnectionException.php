@@ -1,4 +1,4 @@
-<?php namespace AKUtils\DBUtils\Connection;
+<?php namespace DBUtils\Connection;
 
 class ConnectionException extends \Exception
 {

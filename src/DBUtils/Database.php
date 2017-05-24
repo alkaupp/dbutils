@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
-use AKUtils\DBUtils\DatabaseInterface;
-use AKUtils\DBUtils\UnknownDatabaseDriverException;
-use AKUtils\DBUtils\Insert;
-use AKUtils\DBUtils\Replace;
-use AKUtils\DBUtils\Delete;
-use AKUtils\DBUtils\Update;
-use AKUtils\DBUtils\Table;
-use AKUtils\DBUtils\Connection\ConnectionInterface;
-use AKUtils\DBUtils\Charset;
-use AKUtils\DBUtils\CharsetException;
-use AKUtils\DBUtils\Collation;
-use AKUtils\DBUtils\CollationException;
+use DBUtils\DatabaseInterface;
+use DBUtils\UnknownDatabaseDriverException;
+use DBUtils\Insert;
+use DBUtils\Replace;
+use DBUtils\Delete;
+use DBUtils\Update;
+use DBUtils\Table;
+use DBUtils\Connection\ConnectionInterface;
+use DBUtils\Charset;
+use DBUtils\CharsetException;
+use DBUtils\Collation;
+use DBUtils\CollationException;
 
 class Database implements DatabaseInterface
 {

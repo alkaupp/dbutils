@@ -1,10 +1,10 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Database;
-use AKUtils\DBUtils\Filter;
-use AKUtils\DBUtils\Connection\ConnectionInterface;
-use AKUtils\DBUtils\Connection\SQLiteConnection;
+use DBUtils\Database;
+use DBUtils\Filter;
+use DBUtils\Connection\ConnectionInterface;
+use DBUtils\Connection\SQLiteConnection;
 
 class DatabaseTest extends TestCase
 {

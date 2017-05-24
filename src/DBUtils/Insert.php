@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
-use AKUtils\DBUtils\SQLStatementInterface;
-use AKUtils\DBUtils\Statement;
+use DBUtils\SQLStatementInterface;
+use DBUtils\Statement;
 
 class Insert extends Statement implements SQLStatementInterface
 {

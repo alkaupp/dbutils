@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Delete;
-use AKUtils\DBUtils\Filter;
+use DBUtils\Delete;
+use DBUtils\Filter;
 
 class DeleteTest extends TestCase
 {

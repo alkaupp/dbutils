@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Replace;
+use DBUtils\Replace;
 
 class ReplaceTest extends TestCase
 {

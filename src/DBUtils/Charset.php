@@ -1,6 +1,6 @@
 <?php
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
 class Charset
 {

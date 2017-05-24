@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils\Connection;
+namespace DBUtils\Connection;
 
-use AKUtils\DBUtils\Connection\ConnectionInterface;
-use AKUtils\DBUtils\Connection\AbstractConnection;
-use AKUtils\DBUtils\Connection\ConnectionException;
+use DBUtils\Connection\ConnectionInterface;
+use DBUtils\Connection\AbstractConnection;
+use DBUtils\Connection\ConnectionException;
 
 class MySQLConnection extends AbstractConnection implements ConnectionInterface
 {

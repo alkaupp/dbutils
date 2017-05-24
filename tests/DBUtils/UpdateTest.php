@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Update;
-use AKUtils\DBUtils\Filter;
+use DBUtils\Update;
+use DBUtils\Filter;
 
 class UpdateTest extends TestCase
 {

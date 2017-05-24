@@ -1,8 +1,8 @@
 <?php
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
-use AKUtils\DBUtils\Filter;
+use DBUtils\Filter;
 
 interface Filterable
 {

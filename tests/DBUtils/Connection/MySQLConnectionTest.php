@@ -1,12 +1,12 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use AKUtils\DBUtils\Connection\MySQLConnection;
+use DBUtils\Connection\MySQLConnection;
 
 class MySQLConnectionTest extends TestCase
 {
     /**
-     * @expectedException \AKUtils\DBUtils\Connection\ConnectionException
+     * @expectedException \DBUtils\Connection\ConnectionException
      */
     public function testGetConnectionExceptionNoHostnameSet()
     {
@@ -15,7 +15,7 @@ class MySQLConnectionTest extends TestCase
     }
 
     /**
-     * @expectedException \AKUtils\DBUtils\Connection\ConnectionException
+     * @expectedException \DBUtils\Connection\ConnectionException
      */
     public function testGetConnectionExceptionNoUsernameSet()
     {
@@ -25,7 +25,7 @@ class MySQLConnectionTest extends TestCase
     }
 
     /**
-     * @expectedException \AKUtils\DBUtils\Connection\ConnectionException
+     * @expectedException \DBUtils\Connection\ConnectionException
      */
     public function testGetConnectionExceptionNoPasswordSet()
     {

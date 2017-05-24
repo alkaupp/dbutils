@@ -1,38 +1,67 @@
-AKUtils
+DBUtils
 =======
-
-AKUtils is a collection of general tools. 
-
-Current collection
-------------------
-
-### DBUtils
 
 DBUtils is partly a wrapper for PDO but also a fluent API for creating
 SQL-queries. This means that as a developer, you're able to chain method calls
 to create SQL-queries in an intuitive manner.
 
-#### Database
+### Connection
 
-Database class is used for creating a database connection. Its' main purpose is
-to serve different query classes with a PDO-connection.
+First we have to define a connection. This means setting credentials, database
+name, host etc. 
 
-Example:
+Maybe we want to setup a connection to a known MySQL-database:
 
 ```
-$db = new Database();
-$db->setHostname("localhost")
-    ->setDatabaseName("baz")
+use DBUtils\Connection\MySQLConnection;
+
+$con = new MySQLConnection();
+$con->setHostName("localhost")
+    ->setPort(3306)
     ->setUsername("foo")
     ->setPassword("bar")
-    ->setDriver("mysql");
-$connection = $db->getConnection();
+    ->setDatabaseName("baz");
 ```
 
-#### Query-classes
+Or we could create a SQLiteConnection:
 
-Database object can be used to instantiate query-classes. We can chain method
-calls to do an Insert-statement.
+```
+use DBUtils\Connection\SQLiteConnection;
+
+$con = new SQLiteConnection();
+$con->setDatabasePath("/home/user/database.db");
+```
+
+### Database
+
+Database-object is the most source of all database related actions. That means
+creating, updating, dropping tables and also inserting, replacing, deleting and
+updating rows. 
+
+Database has a fluent API which means that as a developer you can chain method
+calls to create statements without needing to worry about the semantics of
+operating with PDO-objects.
+
+#### Working with tables
+
+You can create, update and drop tables using DBUtils API. Using fluent API is
+very intuitive:
+
+```
+$db = new Database($con);
+$db->table()->setTable("employees")
+    ->addColumn("id", "INT", ["AUTO_INCREMENT", "PRIMARY KEY"])
+    ->addColumn("first_name", "VARCHAR(255)", ["NOT NULL"])
+    ->addColumn("last_name", "VARCHAR(255)", ["NOT NULL"])
+    ->addForeignKey("unit_id", "unit", "id", ["ON DELETE SET NULL"])
+    ->create();
+    // we could also call update() or drop() which ever are case happens to be
+```
+
+#### Statement-classes
+
+Database object can be used to instantiate statement-classes. Here we also make
+use of fluent API. We can chain method calls to do an Insert-statement.
 
 Example:
 
@@ -60,5 +89,26 @@ Or do Delete.
 ```
 $db->delete()->from("test")
     ->where("animal", Filter::EQUALS, "mule")
+    ->execute();
+```
+
+As you can see, DBUtils API mimics SQL queries using same kind of keywords in
+method calls. However, if your not familiar with SQL, it is possible to use
+methods like setTable() and setData() to achieve the same goal.
+
+Example:
+
+```
+$db->insert()
+    ->setTable("test")
+    ->setData(["name" => "Tommy Testman", "address" => "Road 12"])
+    ->execute();
+
+// Or update
+
+$db->update()
+    ->setTable("test")
+    ->setData(["name" => "Tommy Testman", "address" => "Road 12"])
+    ->where("id", Filter::EQUALS, 42)
     ->execute();
 ```

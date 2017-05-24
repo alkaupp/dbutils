@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AKUtils\DBUtils;
+namespace DBUtils;
 
-use AKUtils\DBUtils\Statement;
-use AKUtils\DBUtils\SQLStatementInterface;
-use AKUtils\DBUtils\Filterable;
-use AKUtils\DBUtils\Filter;
+use DBUtils\Statement;
+use DBUtils\SQLStatementInterface;
+use DBUtils\Filterable;
+use DBUtils\Filter;
 
 class Delete extends Statement implements SQLStatementInterface, Filterable
 {
