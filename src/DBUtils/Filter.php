@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DBUtils;
 
-use DBUtils\SQLStatementInterface;
+use DBUtils\Statement\SQLStatementInterface;
 use DBUtils\Filterable;
 
 class Filter implements Filterable

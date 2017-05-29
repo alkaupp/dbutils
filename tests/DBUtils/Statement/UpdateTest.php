@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use DBUtils\Update;
+use DBUtils\Statement\Update;
 use DBUtils\Filter;
 
 class UpdateTest extends TestCase

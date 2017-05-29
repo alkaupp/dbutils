@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DBUtils;
+namespace DBUtils\Statement;
 
-use DBUtils\Statement;
-use DBUtils\SQLStatementInterface;
+use DBUtils\Statement\Statement;
+use DBUtils\Statement\SQLStatementInterface;
 use DBUtils\Filterable;
 use DBUtils\Filter;
 

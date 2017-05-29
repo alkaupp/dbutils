@@ -1,4 +1,4 @@
-<?php namespace DBUtils;
+<?php namespace DBUtils\Statement;
 
 interface SQLStatementInterface
 {

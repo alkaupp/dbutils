@@ -6,10 +6,10 @@ namespace DBUtils;
 
 use DBUtils\DatabaseInterface;
 use DBUtils\UnknownDatabaseDriverException;
-use DBUtils\Insert;
-use DBUtils\Replace;
-use DBUtils\Delete;
-use DBUtils\Update;
+use DBUtils\Statement\Insert;
+use DBUtils\Statement\Replace;
+use DBUtils\Statement\Delete;
+use DBUtils\Statement\Update;
 use DBUtils\Table;
 use DBUtils\Connection\ConnectionInterface;
 use DBUtils\Charset;

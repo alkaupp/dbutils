@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DBUtils;
+namespace DBUtils\Statement;
 
 class Replace extends Insert
 {

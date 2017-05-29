@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use DBUtils\Filter;
-use DBUtils\SQLStatementInterface;
+use DBUtils\Statement\SQLStatementInterface;
 
 class FilterTest extends TestCase
 {

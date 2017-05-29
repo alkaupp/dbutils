@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use DBUtils\Delete;
+use DBUtils\Statement\Delete;
 use DBUtils\Filter;
 
 class DeleteTest extends TestCase
