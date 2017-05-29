@@ -71,10 +71,11 @@ class Update extends Statement implements SQLStatementInterface, Filterable
     {
         $stmt = $this->createQuery();
         $query = $this->connection->prepare($stmt);
+        $data = $this->getData();
         $filters = $this->filter->getFilters();
         $params = array_merge(
             $this->prepareParameters($data),
-            $this->prepareParameters($filters)
+            $filters
         );
         $query->execute($params);
         return $query->rowCount();

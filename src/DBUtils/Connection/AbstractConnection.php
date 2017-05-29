@@ -16,6 +16,11 @@ abstract class AbstractConnection
     abstract public function getConnection(): \PDO;
     abstract protected function getDSN(): string;
 
+    /**
+     * Set hostname for connection, eg. localhost
+     * @param string $hostname Ie. "localhost"
+     * @return ConnectionInterface
+     */
     public function setHostname(string $hostname)
     {
         $this->hostname = $hostname;
@@ -27,6 +32,11 @@ abstract class AbstractConnection
         return $this->hostname;
     }
 
+    /**
+     * Set port for connection, eg. 3306
+     * @param int $hostname Ie. 3306
+     * @return ConnectionInterface
+     */
     public function setPort(int $port)
     {
         $this->port = $port;
@@ -38,6 +48,11 @@ abstract class AbstractConnection
         return $this->port;
     }
 
+    /**
+     * Set username for connection
+     * @param string $username Username to your database server
+     * @return ConnectionInterface
+     */
     public function setUsername(string $username)
     {
         $this->username = $username;
@@ -49,6 +64,11 @@ abstract class AbstractConnection
         return $this->username;
     }
 
+    /**
+     * Set password for connection
+     * @param string $password Password to your database server
+     * @return ConnectionInterface
+     */
     public function setPassword(string $password)
     {
         $this->password = $password;
@@ -60,6 +80,11 @@ abstract class AbstractConnection
         return $this->password;
     }
 
+    /**
+     * Set database name for connection
+     * @param string $dbname Database name in your database server
+     * @return ConnectionInterface
+     */
     public function setDatabaseName(string $dbname)
     {
         $this->dbname = $dbname;
@@ -71,6 +96,16 @@ abstract class AbstractConnection
         return $this->dbname;
     }
 
+    /**
+     * Set a PDO driver for PDO-object
+     *
+     * This can be used in case you want to develop a connection object that is
+     * not supported yet in this library. That could include a driver such as
+     * DB2, Oracle or MSSQL. Check http://php.net/manual/en/pdo.drivers.php
+     *
+     * @param string $driver
+     *
+     */
     public function setDriver(string $driver)
     {
         $this->driver = $driver;

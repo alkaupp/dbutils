@@ -32,7 +32,9 @@ class MySQLConnection extends AbstractConnection implements ConnectionInterface
                 throw new ConnectionException("Connection error: password missing");
             }
             $options = [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'];
-            $this->connection = new \PDO($dsn, $username, $password, $options);
+            $pdo = new \PDO($dsn, $username, $password, $options);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->connection = $pdo;
         }
         return $this->connection;
     }

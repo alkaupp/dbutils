@@ -19,6 +19,7 @@ class DatabaseTest extends TestCase
             ->setTable("test")
             ->addColumn("id", "integer", ["primary key"])
             ->addColumn("name", "text")
+            ->addColumn("age", "integer")
             ->create();
         self::$sqliteCon = $con;
     }
@@ -90,6 +91,33 @@ class DatabaseTest extends TestCase
         $query = $db->insert()
             ->into("test")
             ->values(["name" => "Test User"])
+            ->execute();
+        $this->assertEquals(1, $query, "Rowcount mismatch");
+    }
+
+    /**
+     * @depends testInsertExecute
+     */
+    public function testUpdateExecute()
+    {
+        $this->markTestIncomplete("Does not return affected rows.");
+        $db = new Database(self::$sqliteCon);
+        $query = $db->update("test")
+            ->set(["name" => "Testy Boy"])
+            ->where("name", Filter::EQUALS, "Test User")
+            ->execute();
+        $this->assertEquals(1, $query, "Rowcount mismatch");
+    }
+
+    /**
+     * @depends testUpdateExecute
+     */
+    public function testDeleteExecute()
+    {
+        $db = new Database(self::$sqliteCon);
+        $query = $db->delete()
+            ->from("test")
+            ->where("name", Filter::EQUALS, "Testy Boy")
             ->execute();
         $this->assertEquals(1, $query, "Rowcount mismatch");
     }

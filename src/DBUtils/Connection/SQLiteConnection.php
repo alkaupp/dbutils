@@ -40,6 +40,11 @@ class SQLiteConnection implements ConnectionInterface
         return $this->connection;
     }
 
+    /**
+     * Set location of database file
+     * @param string $path
+     * @return $this
+     */
     public function setDatabasePath(string $path)
     {
         if (!file_exists($path)) {
@@ -55,12 +60,19 @@ class SQLiteConnection implements ConnectionInterface
         return $this->databasePath;
     }
 
+    /**
+     * Use in memory database. Suitable for tests and whatnot.
+     * @return $this
+     */
     public function useInMemoryDatabase()
     {
         $this->databasePath = self::IN_MEMORY_DB;
         return $this;
     }
 
+    /**
+     * @see \DBUtils\Connection\AbstractConnection::setUsername()
+     */
     public function setUsername(string $user)
     {
         $this->username = $user;
@@ -72,6 +84,9 @@ class SQLiteConnection implements ConnectionInterface
         return $this->username;
     }
 
+    /**
+     * @see \DBUtils\Connection\AbstractConnection::setPassword()
+     */
     public function setPassword(string $pass)
     {
         $this->password = $pass;
