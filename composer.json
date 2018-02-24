@@ -1,17 +1,15 @@
 {
-    "config": {
-        "platform": {
-            "php": "7.0"
-        }
-    },
-    "autoload": {
-        "psr-4": {"DBUtils\\": "src/DBUtils/"}
-    },
-    "require": {
-        "phpunit/phpunit": "^6.0",
-        "phpunit/dbunit": "^3.0",
-        "phpunit/php-code-coverage": "^5.2",
-        "psr/log": "^1.0",
-        "symfony/yaml": "^3.2"
-    }
+  "autoload": {
+    "psr-4": {"DBUtils\\": "src/DBUtils/"}
+  },
+  "require": {
+    "php": "^7.1",
+    "psr/log": "^1.0",
+    "symfony/yaml": "^3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0",
+    "phpunit/dbunit": "^3.0",
+    "phpunit/php-code-coverage": "^5.2",
+  }
 }
