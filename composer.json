@@ -1,4 +1,14 @@
 {
+  "name": "alkaupp/dbutils",
+  "description": "Database utils",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+      {
+        "name": "Aleksi Kauppila",
+        "email": "aleksi.kauppila@gmail.com"
+      }
+  ],
   "autoload": {
     "psr-4": {"DBUtils\\": "src/DBUtils/"}
   },
@@ -10,6 +20,6 @@
   "require-dev": {
     "phpunit/phpunit": "^6.0",
     "phpunit/dbunit": "^3.0",
-    "phpunit/php-code-coverage": "^5.2",
+    "phpunit/php-code-coverage": "^5.2"
   }
 }
