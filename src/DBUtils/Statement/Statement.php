@@ -40,11 +40,7 @@ abstract class Statement
     {
         $params = [];
         foreach ($data as $key => $val) {
-            $value = $val;
-            if (is_string($val)) {
-                $value = "'{$val}'";
-            }
-            $params[":{$key}"] = $value;
+            $params[":{$key}"] = $val;
         }
         return $params;
     }
