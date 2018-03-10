@@ -11,8 +11,8 @@ interface DatabaseInterface
     public function insert(): Insert;
     public function delete(): Delete;
     public function replace(): Replace;
-    public function update(): Update;
+    public function update(string $table=null): Update;
     public function create(string $dbname);
     public function drop();
-    public function getPDO(): PDO;
+    public function getConnection(): PDO;
 }

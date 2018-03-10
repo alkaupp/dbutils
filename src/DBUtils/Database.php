@@ -16,6 +16,7 @@ use DBUtils\Charset;
 use DBUtils\CharsetException;
 use DBUtils\Collation;
 use DBUtils\CollationException;
+use PDO;
 
 class Database implements DatabaseInterface
 {
@@ -28,10 +29,7 @@ class Database implements DatabaseInterface
         $this->connection = $con;
     }
 
-    /**
-     * This shouldn't be public. But for sake of testability...
-     */
-    public function getConnection(): \PDO
+    public function getConnection(): PDO
     {
         return $this->connection->getConnection();
     }
@@ -122,3 +120,4 @@ class Database implements DatabaseInterface
         $query->execute();
     }
 }
+
