@@ -75,7 +75,7 @@ class Filter implements Filterable
         if ($filter === null) {
             $filter = "WHERE ";
         }
-        $filter .= "{$column} ";
+        $filter .= "`{$column}` ";
         switch ($comparator) {
         case self::EQUALS:
             $filter .= "= ";

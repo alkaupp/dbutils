@@ -83,7 +83,7 @@ class Delete extends Statement implements SQLStatementInterface, Filterable
 
     protected function getQueryString($table, $filters): string
     {
-        $sqlString = "DELETE FROM {$table} {$filters}";
+        $sqlString = "DELETE FROM `{$table}` {$filters}";
         return $sqlString;
     }
 }

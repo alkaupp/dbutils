@@ -59,7 +59,7 @@ class Insert extends Statement implements SQLStatementInterface
             array_keys($this->getData())
         );
         $colString = implode(", ", $columns);
-        $placeholders = $this->getPlaceholdersForColumns($columns);
+        $placeholders = $this->getPlaceholdersForColumns(array_keys($this->getData()));
         $table = $this->getTable();
         $query = $this->getQueryString($table, $colString, $placeholders);
         return $query;

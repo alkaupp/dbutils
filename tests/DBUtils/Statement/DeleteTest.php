@@ -13,7 +13,7 @@ class DeleteTest extends TestCase
         $delete->from("test")
             ->where("id", Filter::EQUALS, 666);
         $actual = $delete->getSqlStatement();
-        $expected = "DELETE FROM test WHERE id = 666";
+        $expected = "DELETE FROM `test` WHERE `id` = 666";
         $this->assertEquals($expected, $actual);
     }
 }

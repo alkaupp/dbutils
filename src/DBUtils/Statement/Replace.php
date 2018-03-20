@@ -14,7 +14,7 @@ class Replace extends Insert
 
     protected function getQueryString(string $table, string $columns, string $params): string
     {
-        return "REPLACE INTO {$table}($columns) VALUES({$params});";
+        return "REPLACE INTO `{$table}` ($columns) VALUES({$params});";
     }
 }
 

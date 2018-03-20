@@ -17,7 +17,7 @@ class ReplaceTest extends TestCase
         $pdo = $this->createMock(PDO::class);
         $replace = new Replace($pdo);
         $replace->into("test")->values(["id" => 3, "name" => "Testman"]);
-        $expected = "REPLACE INTO test(id, name) VALUES(3, 'Testman');";
+        $expected = "REPLACE INTO `test` (`id`, `name`) VALUES(3, 'Testman');";
         $this->assertEquals($expected, $replace->getSqlStatement());
     }
 }

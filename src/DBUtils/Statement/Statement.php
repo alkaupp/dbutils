@@ -45,6 +45,18 @@ abstract class Statement
         return $params;
     }
 
+    protected function prepareParametersForSqlString(array $data): array
+    {
+        $params = [];
+        foreach ($data as $key => $val) {
+            if (is_string($val)) {
+                $val = "'{$val}'";
+            }
+            $params[":{$key}"] = $val;
+        }
+        return $params;
+    }
+
     protected function getPlaceholdersForColumns(array $columns): string
     {
         $placeholders = implode(", ", array_map(function($column) {
@@ -84,7 +96,15 @@ abstract class Statement
 
     protected function columnsToString(array $columns): string
     {
-        return implode(", ", $columns);
+        return implode(
+            ", ",
+            array_map(
+                function ($column) {
+                    return "`{$column}`";
+                },
+                $columns
+            )
+        );
     }
 }
 

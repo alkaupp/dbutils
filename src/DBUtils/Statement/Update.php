@@ -56,7 +56,7 @@ class Update extends Statement implements SQLStatementInterface, Filterable
     {
         $table = $this->getTable();
         $data = $this->getData();
-        $params = $this->prepareParameters($data);
+        $params = $this->prepareParametersForSqlString($data);
         $columns = strtr($this->preparePlaceholders($data), $params);
         $filter = $this->filter;
         if ($this->filter === null) {
@@ -83,7 +83,7 @@ class Update extends Statement implements SQLStatementInterface, Filterable
 
     protected function getQueryString(string $table, string $columns, string $filters): string
     {
-        return "UPDATE `{$table}`SET {$columns} {$filters}";
+        return "UPDATE `{$table}` SET {$columns} {$filters}";
     }
 
     protected function preparePlaceholders(array $data): string
