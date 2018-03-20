@@ -83,14 +83,14 @@ class Update extends Statement implements SQLStatementInterface, Filterable
 
     protected function getQueryString(string $table, string $columns, string $filters): string
     {
-        return "UPDATE {$table} SET {$columns} {$filters}";
+        return "UPDATE `{$table}`SET {$columns} {$filters}";
     }
 
     protected function preparePlaceholders(array $data): string
     {
         $placeholders = [];
         foreach ($data as $column => $value) {
-            $placeholders[] = "{$column}=:{$column}";
+            $placeholders[] = "`{$column}`=:{$column}";
         }
         $placeholderString = implode(", ", $placeholders);
         return $placeholderString;

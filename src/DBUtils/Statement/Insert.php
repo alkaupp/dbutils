@@ -52,7 +52,12 @@ class Insert extends Statement implements SQLStatementInterface
 
     protected function createQuery(): string
     {
-        $columns = array_keys($this->getData());
+        $columns = array_map(
+            function($column) {
+                return "`{$column}`";
+            },
+            array_keys($this->getData())
+        );
         $colString = implode(", ", $columns);
         $placeholders = $this->getPlaceholdersForColumns($columns);
         $table = $this->getTable();
@@ -77,6 +82,6 @@ class Insert extends Statement implements SQLStatementInterface
 
     protected function getQueryString(string $table, string $columns, string $params): string
     {
-        return "INSERT INTO {$table}($columns) VALUES({$params});";
+        return "INSERT INTO `{$table}` ($columns) VALUES({$params});";
     }
 }
