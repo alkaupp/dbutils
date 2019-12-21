@@ -5,14 +5,14 @@ use DBUtils\Statement\Replace;
 
 class ReplaceTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $pdo = $this->createMock(PDO::class);
         $replace = new Replace($pdo);
         $this->assertInstanceOf(Replace::class, $replace);
     }
 
-    public function testGetSQLStatement()
+    public function testGetSQLStatement(): void
     {
         $pdo = $this->createMock(PDO::class);
         $replace = new Replace($pdo);

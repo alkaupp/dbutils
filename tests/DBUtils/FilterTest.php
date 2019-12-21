@@ -7,12 +7,12 @@ use DBUtils\Statement\SQLStatementInterface;
 class FilterTest extends TestCase
 {
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->sqlStatement = $this->createMock(SQLStatementInterface::class);
     }
 
-    public function testSQLStringFilterEquals()
+    public function testSQLStringFilterEquals(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
@@ -21,7 +21,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterEquals()
+    public function testQueryStringFilterEquals(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::EQUALS, "foobar")
@@ -30,7 +30,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterNotEqual()
+    public function testSQLStringFilterNotEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
@@ -39,7 +39,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterNotEqual()
+    public function testQueryStringFilterNotEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::NOT_EQUAL, "foobar")
@@ -48,7 +48,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterLessThan()
+    public function testSQLStringFilterLessThan(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_THAN, 3)
@@ -57,7 +57,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterLessThan()
+    public function testQueryStringFilterLessThan(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_THAN, 3)
@@ -66,7 +66,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterLessEqual()
+    public function testSQLStringFilterLessEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_EQUAL, 3)
@@ -75,7 +75,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterLessEqual()
+    public function testQueryStringFilterLessEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::LESS_EQUAL, 3)
@@ -84,7 +84,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterGreaterThan()
+    public function testSQLStringFilterGreaterThan(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_THAN, 3)
@@ -93,7 +93,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterGreaterThan()
+    public function testQueryStringFilterGreaterThan(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_THAN, 3)
@@ -102,7 +102,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterGreaterEqual()
+    public function testSQLStringFilterGreaterEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_EQUAL, 3)
@@ -111,7 +111,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testQueryStringFilterGreaterEqual()
+    public function testQueryStringFilterGreaterEqual(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::GREATER_EQUAL, 3)
@@ -120,7 +120,7 @@ class FilterTest extends TestCase
         $this->assertEquals($expected, $sqlString);
     }
 
-    public function testSQLStringFilterIsNull()
+    public function testSQLStringFilterIsNull(): void
     {
         $filter = new Filter($this->sqlStatement);
         $sqlString = $filter->where("column", Filter::IS_NULL)

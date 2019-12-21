@@ -1,5 +1,6 @@
 <?php
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use DBUtils\Database;
 use DBUtils\Filter;
@@ -9,8 +10,12 @@ use DBUtils\Connection\SQLiteConnection;
 class DatabaseTest extends TestCase
 {
     protected static $sqliteCon;
+    /**
+     * @var ConnectionInterface|MockObject
+     */
+    private $connection;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         $con = new SQLiteConnection();
         $con->useInMemoryDatabase();
@@ -24,19 +29,19 @@ class DatabaseTest extends TestCase
         self::$sqliteCon = $con;
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::$sqliteCon = null;
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $pdo = $this->createMock(PDO::class);
         $this->connection = $this->createMock(ConnectionInterface::class);
         $this->connection->method("getConnection")->willReturn($pdo);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $db = new Database(self::$sqliteCon);
         $db->delete()
@@ -45,47 +50,47 @@ class DatabaseTest extends TestCase
             ->execute();
     }
 
-    public function testGetConnection()
+    public function testGetConnection(): void
     {
         $db = new Database($this->connection);
         $con = $db->getConnection();
         $this->assertInstanceOf(PDO::class, $con);
     }
 
-    public function testInsert()
+    public function testInsert(): void
     {
         $db = new Database($this->connection);
         $actual = $db->insert()
             ->into("test")
             ->values(["id" => 3, "name" => "testman"])
             ->getSQLStatement();
-        $expected = "INSERT INTO test(id, name) VALUES(3, 'testman');";
+        $expected = "INSERT INTO `test` (`id`, `name`) VALUES(3, 'testman');";
         $this->assertEquals($expected, $actual);
     }
 
-    public function testReplace()
+    public function testReplace(): void
     {
         $db = new Database($this->connection);
         $actual = $db->replace()
             ->into("test")
             ->values(["id" => 3, "name" => "testman"])
             ->getSqlStatement();
-        $expected = "REPLACE INTO test(id, name) VALUES(3, 'testman');";
+        $expected = "REPLACE INTO `test` (`id`, `name`) VALUES(3, 'testman');";
         $this->assertEquals($expected, $actual);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         $db = new Database($this->connection);
         $actual = $db->update("test")
             ->set(["foo" => "bar"])
             ->where("id", Filter::EQUALS, 45)
             ->getSqlStatement();
-        $expected = "UPDATE test SET foo='bar' WHERE id = 45";
+        $expected = "UPDATE `test` SET `foo`='bar' WHERE `id` = 45";
         $this->assertEquals($expected, $actual);
     }
 
-    public function testInsertExecute()
+    public function testInsertExecute(): void
     {
         $db = new Database(self::$sqliteCon);
         $query = $db->insert()
@@ -98,7 +103,7 @@ class DatabaseTest extends TestCase
     /**
      * @depends testInsertExecute
      */
-    public function testUpdateExecute()
+    public function testUpdateExecute(): void
     {
         $this->markTestIncomplete("Does not return affected rows.");
         $db = new Database(self::$sqliteCon);
@@ -112,7 +117,7 @@ class DatabaseTest extends TestCase
     /**
      * @depends testUpdateExecute
      */
-    public function testDeleteExecute()
+    public function testDeleteExecute(): void
     {
         $db = new Database(self::$sqliteCon);
         $query = $db->delete()

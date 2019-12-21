@@ -5,7 +5,7 @@ use DBUtils\Table;
 
 class TableTest extends TestCase
 {
-    public function testGetSqlCreateStatement()
+    public function testGetSqlCreateStatement(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -18,7 +18,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetSqlCreateStatementWithForeignKeys()
+    public function testGetSqlCreateStatementWithForeignKeys(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -33,7 +33,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementAddColumn()
+    public function testGetUpdateSqlStatementAddColumn(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -44,7 +44,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementModifyColumn()
+    public function testGetUpdateSqlStatementModifyColumn(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -55,7 +55,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementDropColumn()
+    public function testGetUpdateSqlStatementDropColumn(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -66,7 +66,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementAddFK()
+    public function testGetUpdateSqlStatementAddFK(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -77,7 +77,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementDropFK()
+    public function testGetUpdateSqlStatementDropFK(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);
@@ -88,7 +88,7 @@ class TableTest extends TestCase
         $this->assertEquals($expected, $stmt);
     }
 
-    public function testGetUpdateSqlStatementDropTable()
+    public function testGetUpdateSqlStatementDropTable(): void
     {
         $pdo = $this->createMock(\PDO::class);
         $table = new Table($pdo);

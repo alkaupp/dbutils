@@ -6,7 +6,7 @@ use DBUtils\Filter;
 
 class DeleteTest extends TestCase
 {
-    public function testGetSqlStatement()
+    public function testGetSqlStatement(): void
     {
         $pdo = $this->createMock(PDO::class);
         $delete = new Delete($pdo);

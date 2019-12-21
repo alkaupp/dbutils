@@ -54,8 +54,7 @@ class Filter implements Filterable
             }
             return $filter;
         }, $this->filters);
-        $sqlString = strtr($this->queryString, $filters);
-        return $sqlString;
+        return strtr($this->queryString, $filters);
     }
 
     public function getQueryString(): string

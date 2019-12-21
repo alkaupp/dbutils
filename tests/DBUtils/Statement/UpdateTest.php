@@ -6,14 +6,14 @@ use DBUtils\Filter;
 
 class UpdateTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $pdo = $this->createMock(PDO::class);
         $update = new Update($pdo);
         $this->assertInstanceOf(Update::class, $update);
     }
 
-    public function testGetSQLStatement()
+    public function testGetSQLStatement(): void
     {
         $pdo = $this->createMock(PDO::class);
         $update = new Update($pdo);
@@ -25,7 +25,7 @@ class UpdateTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetSQLStatementUpdateTwoValues()
+    public function testGetSQLStatementUpdateTwoValues(): void
     {
         $pdo = $this->createMock(PDO::class);
         $update = new Update($pdo);
@@ -37,7 +37,7 @@ class UpdateTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testGetSQLStatementUpdateTwoValuesWithTwoFilters()
+    public function testGetSQLStatementUpdateTwoValuesWithTwoFilters(): void
     {
         $pdo = $this->createMock(PDO::class);
         $update = new Update($pdo);

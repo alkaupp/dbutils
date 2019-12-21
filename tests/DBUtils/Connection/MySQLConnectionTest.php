@@ -1,37 +1,32 @@
 <?php
 
+use DBUtils\Connection\ConnectionException;
 use PHPUnit\Framework\TestCase;
 use DBUtils\Connection\MySQLConnection;
 
 class MySQLConnectionTest extends TestCase
 {
-    /**
-     * @expectedException \DBUtils\Connection\ConnectionException
-     */
-    public function testGetConnectionExceptionNoHostnameSet()
+    public function testGetConnectionExceptionNoHostnameSet(): void
     {
+        $this->expectException(ConnectionException::class);
         $con = new MySQLConnection();
         $con->getConnection();
     }
 
-    /**
-     * @expectedException \DBUtils\Connection\ConnectionException
-     */
-    public function testGetConnectionExceptionNoUsernameSet()
+    public function testGetConnectionExceptionNoUsernameSe(): void
     {
+        $this->expectException(ConnectionException::class);
         $con = new MySQLConnection();
-        $con->setHostName("localhost");
+        $con->setHostName('localhost');
         $con->getConnection();
     }
 
-    /**
-     * @expectedException \DBUtils\Connection\ConnectionException
-     */
-    public function testGetConnectionExceptionNoPasswordSet()
+    public function testGetConnectionExceptionNoPasswordSet(): void
     {
+        $this->expectException(ConnectionException::class);
         $con = new MySQLConnection();
-        $con->setHostName("localhost")
-            ->setUsername("foo");
+        $con->setHostName('localhost')
+            ->setUsername('foo');
         $con->getConnection();
     }
 }

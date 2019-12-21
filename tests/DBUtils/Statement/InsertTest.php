@@ -5,14 +5,14 @@ use DBUtils\Statement\Insert;
 
 class InsertTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $pdo = $this->createMock(PDO::class);
         $insert = new Insert($pdo);
         $this->assertInstanceOf(Insert::class, $insert);
     }
 
-    public function testGetSQLStatement()
+    public function testGetSQLStatement(): void
     {
         $pdo = $this->createMock(PDO::class);
         $insert = new Insert($pdo);

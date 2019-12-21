@@ -13,7 +13,7 @@
     </php>
 
     <testsuites>
-        <testsuite>
+        <testsuite name="default">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
