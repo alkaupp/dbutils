@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  php:
+    container_name: db-utils
+    build:
+      context: ./
+    tty: true
+    volumes:
+    - ./:/app
+  composer:
+    image: composer
+    command: install
+    volumes:
+      - ./:/app
+    working_dir: /app
